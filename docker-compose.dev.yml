@@ -1,0 +1,54 @@
+services:
+  # Next.js application (for development)
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    image: gemini-chat-app-dev
+    ports:
+      - "3000:3000"
+    volumes:
+      # Mounts the project directory to the container
+      # This enables hot-reloading
+      - .:/app
+      # Prevents node_modules on the host from overwriting the container's
+      - /app/node_modules
+    env_file:
+      - .env
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    restart: always
+
+  # MongoDB database
+  mongodb:
+    image: mongo:7.0
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=password123
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+
+  # Database initialization service
+  db-init:
+    build:
+      context: .
+      dockerfile: Dockerfile.db-init
+    image: gemini-chat-db-init-dev
+    environment:
+      - MONGODB_URI=mongodb://admin:password123@mongodb:27017/gemini-chat?authSource=admin
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    restart: on-failure
+
+volumes:
+  mongodb_data: 

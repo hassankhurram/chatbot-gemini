@@ -1,0 +1,98 @@
+version: '3.8'
+
+services:
+  # MongoDB Database
+  mongodb:
+    image: mongo:7.0
+    container_name: gemini-chat-mongodb
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password123
+      MONGO_INITDB_DATABASE: gemini-chat
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - gemini-chat-network
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+  # Database Initialization Service
+  db-init:
+    build:
+      context: .
+      dockerfile: Dockerfile.db-init
+    container_name: gemini-chat-db-init
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=production
+      - MONGODB_URI=mongodb://admin:password123@mongodb:27017/gemini-chat?authSource=admin
+    command: ["node", "scripts/mongo-init-with-hash.js"]
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    networks:
+      - gemini-chat-network
+    restart: "no"
+
+  # Next.js Application
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: gemini-chat-app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    environment:
+      - PORT=3000
+      - NODE_ENV=production
+      - MONGODB_URI=mongodb://admin:password123@mongodb:27017/gemini-chat?authSource=admin
+    depends_on:
+      db-init:
+        condition: service_completed_successfully
+    networks:
+      - gemini-chat-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # MongoDB Admin Interface (Optional)
+  mongo-express:
+    image: mongo-express:1.0.0
+    container_name: gemini-chat-mongo-express
+    restart: unless-stopped
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: admin
+      ME_CONFIG_MONGODB_ADMINPASSWORD: password123
+      ME_CONFIG_MONGODB_URL: mongodb://admin:password123@mongodb:27017/
+      ME_CONFIG_BASICAUTH: false
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    networks:
+      - gemini-chat-network
+    profiles:
+      - admin
+
+volumes:
+  mongodb_data:
+    driver: local
+
+networks:
+  gemini-chat-network:
+    driver: bridge
