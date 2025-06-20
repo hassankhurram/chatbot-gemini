@@ -43,8 +43,10 @@ services:
       context: .
       dockerfile: Dockerfile.db-init
     image: gemini-chat-db-init-dev
+    env_file:
+      - .env
     environment:
-      - MONGODB_URI=mongodb://admin:password123@mongodb:27017/gemini-chat?authSource=admin
+      - MONGODB_URI=${MONGODB_URI}
     depends_on:
       mongodb:
         condition: service_healthy
