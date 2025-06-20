@@ -37,8 +37,8 @@ jobs:
             --project="$PROJECT_ID" \
             --platform managed \
             --allow-unauthenticated \
-            --set-env-vars "NODE_ENV=production,GOOGLE_GENERATIVE_AI_API_KEY=${{ secrets.GOOGLE_GENERATIVE_AI_API_KEY }},JWT_SECRET=${{ secrets.JWT_SECRET }},MONGODB_URI=${{ secrets.MONGODB_URI }},ADMIN_USERNAME=${{ vars.ADMIN_USERNAME }},ADMIN_PASSWORD=${{ secrets.ADMIN_PASSWORD }},ADMIN_EMAIL=${{ vars.ADMIN_EMAIL }},ADMIN_NAME=${{ vars.ADMIN_NAME }}" \
-            --set-build-env-vars "GOOGLE_GENERATIVE_AI_API_KEY=${{ secrets.GOOGLE_GENERATIVE_AI_API_KEY }},JWT_SECRET=${{ secrets.JWT_SECRET }},MONGODB_URI=${{ secrets.MONGODB_URI }},ADMIN_USERNAME=${{ vars.ADMIN_USERNAME }},ADMIN_PASSWORD=${{ secrets.ADMIN_PASSWORD }},ADMIN_EMAIL=${{ vars.ADMIN_EMAIL }},ADMIN_NAME=${{ vars.ADMIN_NAME }}" \
+            --set-env-vars="NODE_ENV=production,GOOGLE_GENERATIVE_AI_API_KEY=${{ secrets.GOOGLE_GENERATIVE_AI_API_KEY }},JWT_SECRET=${{ secrets.JWT_SECRET }},MONGODB_URI=${{ secrets.MONGODB_URI }},ADMIN_USERNAME=${{ vars.ADMIN_USERNAME }},ADMIN_PASSWORD=${{ secrets.ADMIN_PASSWORD }},ADMIN_EMAIL=${{ vars.ADMIN_EMAIL }},ADMIN_NAME=${{ vars.ADMIN_NAME }}" \
+            --set-build-env-vars="GOOGLE_GENERATIVE_AI_API_KEY=${{ secrets.GOOGLE_GENERATIVE_AI_API_KEY }},JWT_SECRET=${{ secrets.JWT_SECRET }},MONGODB_URI=${{ secrets.MONGODB_URI }},ADMIN_USERNAME=${{ vars.ADMIN_USERNAME }},ADMIN_PASSWORD=${{ secrets.ADMIN_PASSWORD }},ADMIN_EMAIL=${{ vars.ADMIN_EMAIL }},ADMIN_NAME=${{ vars.ADMIN_NAME }}" \
             --memory=2Gi \
             --cpu=2 \
             --max-instances=10 \
