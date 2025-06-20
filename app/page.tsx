@@ -133,7 +133,7 @@ export default function Chat() {
               <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-sm">G</span>
               </div>
-              Gemini Chat
+              GenZ Gemini Chat
             </h1>
             <p className="text-sm text-gray-600 mt-1">Welcome, {user?.name} • Upload images, documents, and more</p>
           </div>
@@ -151,9 +151,9 @@ export default function Chat() {
               <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="text-white font-bold text-xl">G</span>
               </div>
-              <h2 className="text-xl font-semibold text-gray-800 mb-2">Welcome to Gemini Chat</h2>
+              <h2 className="text-xl font-semibold text-gray-800 mb-2">Welcome to GenZ Gemini Chat</h2>
               <p className="text-gray-600 mb-6">
-                Start a conversation with Gemini AI. You can send text, upload images, or share documents.
+                Start a conversation with GenZ Gemini AI. You can send text, upload images, or share documents.
               </p>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-2xl mx-auto">
                 <Card className="p-4 hover:shadow-md transition-shadow">
@@ -229,7 +229,7 @@ export default function Chat() {
                           style={{ animationDelay: "0.2s" }}
                         ></div>
                       </div>
-                      <span className="text-sm text-gray-500">Gemini is thinking...</span>
+                      <span className="text-sm text-gray-500">GenZ Gemini is thinking...</span>
                     </div>
                   </div>
                 </div>
@@ -306,7 +306,7 @@ export default function Chat() {
           </form>
 
           <p className="text-xs text-gray-500 mt-2 text-center">
-            Gemini can make mistakes. Consider checking important information.
+           GenZ Gemini can make mistakes. Consider checking important information.
           </p>
         </div>
       </div>
